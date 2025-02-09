@@ -4,6 +4,10 @@ public class IdleState : State
 {
     [SerializeField]
     State moveForwardState = null;
+    [SerializeField]
+    State rotateRight = null;
+    [SerializeField]
+    State rotateLeft = null;
 
     public override void Enter()
     {
@@ -47,10 +51,10 @@ public class IdleState : State
                 break;
             case "rotate right":
                 print("rotate right command");
-                break;
+                return rotateRight;
             case "rotate left":
                 print("rotate left command");
-                break;
+                return rotateLeft;
             default:
                 print("Command " + commandString + " not recognized!");
                 break;
