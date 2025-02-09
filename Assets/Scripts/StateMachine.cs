@@ -1,4 +1,5 @@
 using UnityEngine;
+using Microsoft.Win32;
 
 public class StateMachine : MonoBehaviour
 {
@@ -22,7 +23,6 @@ public class StateMachine : MonoBehaviour
         for(int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).GetComponent<State>().parent = parent;
-            print(transform.GetChild(i).name + "initialized");
         }
         ChangeState(startingState);
     }

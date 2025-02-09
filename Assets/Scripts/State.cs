@@ -4,22 +4,22 @@ public class State: MonoBehaviour
 {
     public Unit parent;
 
-    public void Enter()
+    public virtual void Enter()
     {
 
     }
 
-    public void Exit()
+    public virtual void Exit()
     {
 
     }
 
-    public State UpdateProcess(float delta)
+    public virtual State UpdateProcess(float delta)
     {
         return null;
     }
 
-    public State FixedUpdateProcess(float delta)
+    public virtual State FixedUpdateProcess(float delta)
     {
         return null;
     }

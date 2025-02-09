@@ -11,15 +11,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Terminal terminal = null;
 
+    private void Awake()
+    {
+        unit.terminal = terminal;
+    }
+
     private void Start()
     {
         board.InitializeGrid();
 
         // place unit
         unit.transform.position = Vector3.zero;
-
-        // inject reference
-        terminal.boundUnit = unit;
-        unit.terminal = terminal;
     }
 }

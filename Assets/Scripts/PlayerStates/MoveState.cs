@@ -5,22 +5,22 @@ public class MoveState : State
     [SerializeField]
     State idleState = null;
 
-    public new void Enter()
+    public override void Enter()
     {
         print("Entered move state");
     }
 
-    public new void Exit()
+    public override void Exit()
     {
         print("Exited move state");
     }
 
-    public new State UpdateProcess(float delta)
+    public override State UpdateProcess(float delta)
     {
-        return null;
+        return idleState;
     }
 
-    public new State FixedUpdateProcess(float delta)
+    public override State FixedUpdateProcess(float delta)
     {
         return null;
     }

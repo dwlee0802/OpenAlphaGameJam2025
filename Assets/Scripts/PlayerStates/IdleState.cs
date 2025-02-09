@@ -5,32 +5,32 @@ public class IdleState : State
     [SerializeField]
     State moveForwardState = null;
 
-    public new void Enter()
+    public override void Enter()
     {
         print("Entered idle state");
         parent.terminal.field.interactable = true;
     }
 
-    public new void Exit()
+    public override void Exit()
     {
-        print("Entered exit state");
+        print("Exited idle state");
         parent.terminal.field.interactable = false;
     }
 
-    public new State UpdateProcess(float delta)
+    public override State UpdateProcess(float delta)
     {
-        print("update");
         parent.terminal.field.ActivateInputField();
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            string inputString = parent.terminal.field.text;
             parent.terminal.field.text = "";
-            return ParseCommand(parent.terminal.field.text);
+            return ParseCommand(inputString);
         }
 
         return null;
     }
 
-    public new State FixedUpdateProcess(float delta)
+    public override State FixedUpdateProcess(float delta)
     {
         return null;
     }
@@ -52,7 +52,7 @@ public class IdleState : State
                 print("rotate left command");
                 break;
             default:
-                print("Command not recognized!");
+                print("Command " + commandString + " not recognized!");
                 break;
         }
 
