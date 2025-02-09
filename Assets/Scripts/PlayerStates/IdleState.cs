@@ -8,6 +8,8 @@ public class IdleState : State
     State rotateRight = null;
     [SerializeField]
     State rotateLeft = null;
+    [SerializeField]
+    State shootState = null;
 
     public override void Enter()
     {
@@ -55,6 +57,9 @@ public class IdleState : State
             case "rotate left":
                 print("rotate left command");
                 return rotateLeft;
+            case "shoot":
+                print("Shoot command");
+                return shootState;
             default:
                 print("Command " + commandString + " not recognized!");
                 break;

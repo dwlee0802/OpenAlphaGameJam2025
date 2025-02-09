@@ -11,6 +11,8 @@ public class Unit : MonoBehaviour
     int directionIndex = 0;
     Vector3[] directions;
 
+    public Bullet bulletPrefab = null;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,41 +38,5 @@ public class Unit : MonoBehaviour
     void Update()
     {
         stateMachine.UpdateProcess(Time.deltaTime);
-    }
-
-    public void ParseCommand(string commandString)
-    {
-        switch (commandString)
-        {
-            case "move forward":
-                print("Move forward command");
-                transform.position += directions[directionIndex];
-                break;
-            case "move back":
-                print("Move back command");
-                transform.position += directions[directionIndex];
-                break;
-            case "rotate right":
-                print("rotate right command");
-                transform.Rotate(0, 90, 0);
-                directionIndex += 1;
-                if (directionIndex >= 4)
-                {
-                    directionIndex = 0;
-                }
-                break;
-            case "rotate left":
-                print("rotate left command");
-                transform.Rotate(0, -90, 0);
-                directionIndex -= 1;
-                if (directionIndex <= -1)
-                {
-                    directionIndex = 3;
-                }
-                break;
-            default:
-                print("Command not recognized!");
-                break;
-        }
     }
 }

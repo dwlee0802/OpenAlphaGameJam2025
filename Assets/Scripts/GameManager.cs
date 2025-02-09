@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Terminal terminal = null;
 
+    [SerializeField]
+    Bullet bulletPrefab = null;
+
     private void Awake()
     {
         unit.terminal = terminal;
@@ -22,5 +25,8 @@ public class GameManager : MonoBehaviour
 
         // place unit
         unit.transform.position = Vector3.zero;
+
+        // inject ref to unit for bullet prefab
+        unit.bulletPrefab = bulletPrefab;
     }
 }
