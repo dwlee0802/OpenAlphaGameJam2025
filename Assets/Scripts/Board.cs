@@ -9,6 +9,8 @@ public class Board : MonoBehaviour
 
     [SerializeField]
     GameObject tilePrefab = null;
+    [SerializeField]
+    GameObject wallPrefab = null;
     static int gridLength = 1;
 
     public void InitializeGrid()
@@ -29,6 +31,14 @@ public class Board : MonoBehaviour
                 else
                 {
                     newTile.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                }
+
+                // temp wall generation
+                if(Random.Range(0,10) > 8)
+                {
+                    GameObject newWall = Instantiate(wallPrefab);
+                    newWall.transform.SetParent(transform);
+                    newWall.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
                 }
             }
 

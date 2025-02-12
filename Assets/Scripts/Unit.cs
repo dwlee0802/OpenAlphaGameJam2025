@@ -39,4 +39,9 @@ public class Unit : MonoBehaviour
     {
         stateMachine.UpdateProcess(Time.deltaTime);
     }
+
+    public void ReceiveHit()
+    {
+        print(name + " received hit!");
+    }
 }
