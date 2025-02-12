@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Gun
+  - Tile
   layers:
   - Default
   - TransparentFX

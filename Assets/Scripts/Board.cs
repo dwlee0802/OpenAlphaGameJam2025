@@ -45,4 +45,9 @@ public class Board : MonoBehaviour
             grid.Add(rowList);
         }
     }
+
+    public Tile GetTileAt(int w, int h)
+    {
+        return grid[h][w];
+    }
 }
