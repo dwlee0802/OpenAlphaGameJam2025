@@ -13,6 +13,9 @@ public class Unit : MonoBehaviour
 
     public Bullet bulletPrefab = null;
 
+    public int ammoCount = 1;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
