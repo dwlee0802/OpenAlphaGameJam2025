@@ -5,6 +5,8 @@ public class Bullet : MonoBehaviour
     float lifeTime = 60;
     float speed = 10;
 
+    public GameObject originUnit = null;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,9 +30,10 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.gameObject != originUnit)
         {
             print("hit player!");
+            Destroy(gameObject);
         }
         if (other.CompareTag("Wall"))
         {

@@ -23,7 +23,7 @@ public class ShootState : State
             newBullet.transform.SetParent(parent.transform);
             newBullet.transform.rotation = transform.rotation;
             newBullet.transform.position = parent.transform.position;
-
+            newBullet.originUnit = parent.gameObject;
             parent.ammoCount -= 1;
 
             print("Shot bullet!");
