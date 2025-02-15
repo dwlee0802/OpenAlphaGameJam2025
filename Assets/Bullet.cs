@@ -4,9 +4,11 @@ using Unity.Netcode;
 public class Bullet : NetworkBehaviour
 {
     float lifeTime = 60;
-    float speed = 10;
+    float speed = 50;
 
     public bool originIsHost;
+
+    bool used = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,6 +41,12 @@ public class Bullet : NetworkBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (used)
+        {
+            return;
+        }
+
+        // only set used to true if the collision is meaningful
         if (other.CompareTag("Player"))
         {
             other.GetComponent<Unit>().ReceiveHit();
@@ -47,15 +55,19 @@ public class Bullet : NetworkBehaviour
             //{
             //    Destroy(gameObject);
             //}
+            used = true;
+            GetComponent<MeshRenderer>().enabled = false;
         }
         if (other.CompareTag("Wall"))
         {
             print("hit wall!");
 
-            if (NetworkManager.Singleton.IsHost)
-            {
-                Destroy(gameObject);
-            }
+            //if (NetworkManager.Singleton.IsHost)
+            //{
+            //    Destroy(gameObject);
+            //}
+            used = true;
+            GetComponent<MeshRenderer>().enabled = false;
         }
     }
 
