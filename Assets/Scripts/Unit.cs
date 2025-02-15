@@ -22,6 +22,8 @@ public class Unit : NetworkBehaviour
 
     public bool isDead = false;
 
+    public NetworkVariable<bool> isReady;
+
 
     private void Start()
     {
@@ -69,6 +71,9 @@ public class Unit : NetworkBehaviour
                 isHost = true;
             }
         }
+
+        isReady = new NetworkVariable<bool>();
+        isReady.Value = true;
     }
 
     // Update is called once per frame
@@ -96,6 +101,15 @@ public class Unit : NetworkBehaviour
     {
         print(name + " received hit!");
         isDead = true;
+
+        if (IsHost)
+        {
+            isReady.Value = false;
+        }
+        else
+        {
+            UnreadyServerRpc();
+        }
     }
 
     [ServerRpc]
@@ -125,5 +139,17 @@ public class Unit : NetworkBehaviour
         }
 
         return newBullet;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ReadyServerRpc()
+    {
+        isReady.Value = true;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void UnreadyServerRpc()
+    {
+        isReady.Value = false;
     }
 }

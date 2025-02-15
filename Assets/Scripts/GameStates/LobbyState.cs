@@ -12,6 +12,7 @@ public class LobbyState : GameState
         parent.InGameUI.transform.gameObject.SetActive(false);
         parent.preGameUI.transform.gameObject.SetActive(false);
         parent.networkUI.gameObject.SetActive(true);
+        parent.networkUI.transform.parent.gameObject.SetActive(true);
         parent.postGameUI.gameObject.SetActive(false);
     }
 

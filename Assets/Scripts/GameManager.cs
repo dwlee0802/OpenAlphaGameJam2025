@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     GameStateMachine stateMachine;
 
@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
     public PostGameUI postGameUI;
 
     public Transform tempCamera;
+
+    public static bool hostReady = false;
+    public static bool clientReady = false;
 
 
     private void Start()
@@ -103,5 +106,24 @@ public class GameManager : MonoBehaviour
         }
 
         return units.Count;
+    }
+
+    [ServerRpc]
+    public void ClientReadyServerRpc()
+    {
+        print("client ready");
+        clientReady = true;
+    }
+
+    public bool EveryoneReady()
+    {
+        foreach(Unit unit in GameManager.units)
+        {
+            if (unit.isReady.Value == false)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
