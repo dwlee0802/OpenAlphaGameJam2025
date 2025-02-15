@@ -627,10 +627,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  isHost: 0
   terminal: {fileID: 0}
   bulletPrefab: {fileID: 0}
-  ammoCount: 10
+  ammoCount: 0
   laser: {fileID: 0}
+  isDead: 0
 --- !u!54 &8164738622731661128
 Rigidbody:
   m_ObjectHideFlags: 0

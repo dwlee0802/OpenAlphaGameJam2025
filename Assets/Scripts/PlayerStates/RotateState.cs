@@ -15,6 +15,9 @@ public class RotateState : State
 
     float rotatedAmount = 0;
 
+    float duration = 0.5f;
+    float time = 0;
+
     public override void Enter()
     {
         print("Entered rotate state");
@@ -25,29 +28,45 @@ public class RotateState : State
     {
         print("Exited rotate state");
         rotatedAmount = 0;
+        time = 0;
     }
 
     public override State UpdateProcess(float delta)
     {
-        if(rotatedAmount < 90)
-        {
-            if (isRight)
-            {
-                parent.transform.Rotate(new Vector3(0, rotationSpeed * delta, 0));
-            }
-            else
-            {
-                parent.transform.Rotate(new Vector3(0, rotationSpeed  * (-delta), 0));
-            }
-            rotatedAmount += rotationSpeed * delta;
-            return null;
-        }
-
-        return idleState;
+        return null;
     }
 
     public override State FixedUpdateProcess(float delta)
     {
-        return null;
+        print("time: " + time + " duration: " + duration);
+
+        if (time < duration)
+        {
+            if (isRight)
+            {
+                parent.transform.rotation = Quaternion.Lerp(initialRotation, initialRotation * Quaternion.AngleAxis(90, Vector3.up), time / duration);
+            }
+            else
+            {
+                parent.transform.rotation = Quaternion.Lerp(initialRotation, initialRotation * Quaternion.AngleAxis(-90, Vector3.up), time/duration);
+            }
+
+            time += delta;
+
+            return null;
+        }
+        else
+        {
+            if (isRight)
+            {
+                parent.transform.rotation = Quaternion.Lerp(initialRotation, initialRotation * Quaternion.AngleAxis(90, Vector3.up), 1);
+            }
+            else
+            {
+                parent.transform.rotation = Quaternion.Lerp(initialRotation, initialRotation * Quaternion.AngleAxis(-90, Vector3.up), 1);
+            }
+        }
+
+        return idleState;
     }
 }

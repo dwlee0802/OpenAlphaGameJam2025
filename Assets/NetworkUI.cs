@@ -9,6 +9,7 @@ using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using TMPro;
+using System;
 
 public class NetworkUI : MonoBehaviour
 {
@@ -57,7 +58,16 @@ public class NetworkUI : MonoBehaviour
         }
         flag = true;
         string code = field.text;
-        await StartClientWithRelay(code);
+
+        try
+        {
+            await StartClientWithRelay(code);
+        }
+        catch (Exception e)
+        {
+
+        }
+
         gameObject.SetActive(false);
         GameManager.instance.InGameUI.gameObject.SetActive(true);
         networkEstablished = true;

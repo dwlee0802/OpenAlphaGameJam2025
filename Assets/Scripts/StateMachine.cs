@@ -35,4 +35,13 @@ public class StateMachine : MonoBehaviour
             ChangeState(newState);
         }
     }
+
+    public void UpdateFixedProcess(float delta)
+    {
+        State newState = currentState.FixedUpdateProcess(delta);
+        if (newState != null)
+        {
+            ChangeState(newState);
+        }
+    }
 }

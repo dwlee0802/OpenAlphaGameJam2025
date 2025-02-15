@@ -82,6 +82,16 @@ public class Unit : NetworkBehaviour
         stateMachine.UpdateProcess(Time.deltaTime);
     }
 
+    private void FixedUpdate()
+    {
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        stateMachine.UpdateFixedProcess(Time.fixedDeltaTime);
+    }
+
     public void ReceiveHit()
     {
         print(name + " received hit!");

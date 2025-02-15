@@ -74,8 +74,17 @@ public class GameManager : MonoBehaviour
             unit.transform.GetChild(3).GetComponent<Camera>().enabled = true;
             unit.transform.GetComponentInChildren<AudioListener>().enabled = true;
         }
+        
+        if (units.Count == 0)
+        {
+            unit.transform.position = Board.hostSpawn;
+        }
+        else
+        {
+            unit.transform.position = Board.clientSpawn;
+            unit.transform.Rotate(Vector3.up, 180);
+        }
 
-        unit.transform.position = Vector3.zero + units.Count * Vector3.right * 5;
 
         units.Add(unit);
     }

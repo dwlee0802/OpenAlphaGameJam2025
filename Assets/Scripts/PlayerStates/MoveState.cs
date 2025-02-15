@@ -52,6 +52,12 @@ public class MoveState : State
     public override void Exit()
     {
         print("Exited move state");
+
+        // make position into int
+        Vector3 pos = transform.position;
+        print("raw pos" + pos);
+        transform.position = new Vector3(Mathf.RoundToInt(pos.x), 0, Mathf.RoundToInt(pos.z));
+        print("new pos" + transform.position);
     }
 
     private float Evaluate(float x)
@@ -66,7 +72,7 @@ public class MoveState : State
      */
     bool CheckValidMove()
     {
-        Collider[] colliders = Physics.OverlapBox(targetPosition, new Vector3(0.4f, 1, 0.4f));
+        Collider[] colliders = Physics.OverlapBox(targetPosition, new Vector3(0.1f, 0.5f, 0.2f));
         GameObject tile = null;
         GameObject wall = null;
         GameObject unit = null;

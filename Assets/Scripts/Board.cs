@@ -16,6 +16,30 @@ public class Board : MonoBehaviour
 
     static int gridLength = 1;
 
+    // predefined map
+    // top left corner is 0,0
+    // 0: floor
+    // 1: wall
+    // 2: pit
+    // 7: gun
+    static int[] boardArray = new int[]
+    {
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,1,1,1,1,1,1,0,0,
+        0,0,1,7,0,0,7,1,0,0,
+        0,0,0,0,1,1,0,0,0,0,
+        0,0,0,0,1,1,0,0,0,0,
+        0,0,1,7,0,0,7,1,0,0,
+        0,0,1,1,1,1,1,1,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0
+    };
+
+    public static Vector3 hostSpawn = new Vector3(0, 0, 0);
+    public static Vector3 clientSpawn = new Vector3(9, 0, -9);
+
+
     public void InitializeGrid()
     {
         bool placedGun = false;
@@ -37,24 +61,22 @@ public class Board : MonoBehaviour
                 {
                     newTile.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
                 }
-                
-                // temp wall generation
-                if (Mathf.PerlinNoise(h * 0.7f, w * 0.7f) > 0.65)
+
+                // wall
+                if (Board.boardArray[w + h * Board.height] == 1)
                 {
                     GameObject newWall = Instantiate(wallPrefab);
                     newWall.transform.SetParent(transform);
                     newWall.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
                 }
-                else
+                // gun
+                if (Board.boardArray[w + h * Board.height] == 7)
                 {
-                    //if (Random.Range(0,10) % 5 == 1 && placedGun == false)
-                    //{
-                    //    GameObject gun = Instantiate(gunPrefab);
-                    //    gun.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
-                    //    placedGun = true;
-                    //}
+                    GameObject newGun = Instantiate(gunPrefab);
+                    newGun.transform.SetParent(transform);
+                    newGun.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
                 }
-                
+
             }
 
             grid.Add(rowList);
