@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     GameStateMachine stateMachine;
 
-    static List<Unit> units = new List<Unit>();
+    public static List<Unit> units = new List<Unit>();
 
     [SerializeField]
     Board board = null;
@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public PreGameUI preGameUI;
 
     public NetworkUI networkUI;
+
+    public PostGameUI postGameUI;
 
     public Transform tempCamera;
 

@@ -23,6 +23,8 @@ public class NetworkUI : MonoBehaviour
     [SerializeField]
     TMP_InputField field;
 
+    bool flag = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
@@ -35,6 +37,11 @@ public class NetworkUI : MonoBehaviour
 
     async void HostButtonOnClick()
     {
+        if (flag)
+        {
+            return;
+        }
+        flag = true;
         string code = await StartHostWithRelay();
         GameManager.instance.preGameUI.codeLabel.text = "Join Code: " + code;
         gameObject.SetActive(false);
@@ -44,6 +51,11 @@ public class NetworkUI : MonoBehaviour
 
     async void JoinButtonOnClick()
     {
+        if (flag)
+        {
+            return;
+        }
+        flag = true;
         string code = field.text;
         await StartClientWithRelay(code);
         gameObject.SetActive(false);

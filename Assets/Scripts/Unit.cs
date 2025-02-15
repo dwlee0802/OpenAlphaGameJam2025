@@ -4,6 +4,8 @@ using Unity.Netcode;
 
 public class Unit : NetworkBehaviour
 {
+    public bool isHost = false;
+
     // reference to the terminal this unit is bound to
     public Terminal terminal;
 
@@ -17,6 +19,9 @@ public class Unit : NetworkBehaviour
     public int ammoCount = 1;
 
     public Transform laser;
+
+    public bool isDead = false;
+
 
     private void Start()
     {
@@ -41,6 +46,29 @@ public class Unit : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         GameManager.AddUnit(this);
+
+        if (NetworkManager.IsHost)
+        {
+            if (IsOwner)
+            {
+                isHost = true;
+            }
+            else
+            {
+                isHost = false;
+            }
+        }
+        else
+        {
+            if (IsOwner)
+            {
+                isHost = false;
+            }
+            else
+            {
+                isHost = true;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -57,6 +85,7 @@ public class Unit : NetworkBehaviour
     public void ReceiveHit()
     {
         print(name + " received hit!");
+        isDead = true;
     }
 
     [ServerRpc]
@@ -77,8 +106,9 @@ public class Unit : NetworkBehaviour
 
         Bullet newBullet = Instantiate(bulletPrefab);
         newBullet.transform.rotation = transform.rotation;
-        newBullet.transform.position = transform.position + new Vector3(0, 1, 0);
-        newBullet.originUnit = gameObject;
+        newBullet.transform.position = transform.position + new Vector3(0, 1, 0) + transform.rotation * Vector3.right * 0.8f;
+        newBullet.originIsHost = isHost;
+
         if (ammoCount <= 0 && laser.gameObject.activeSelf == true)
         {
             laser.gameObject.SetActive(false);

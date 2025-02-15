@@ -6,7 +6,7 @@ public class Bullet : NetworkBehaviour
     float lifeTime = 60;
     float speed = 10;
 
-    public GameObject originUnit = null;
+    public bool originIsHost;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,10 +29,6 @@ public class Bullet : NetworkBehaviour
             {
                 Destroy(gameObject);
             }
-            else
-            {
-                DestroyObjectServerRpc();
-            }
         }
     }
 
@@ -43,24 +39,14 @@ public class Bullet : NetworkBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!NetworkManager.Singleton.IsHost)
+        if (other.CompareTag("Player"))
         {
-            return;
-        }
-
-        if (other.CompareTag("Player") && other.gameObject != originUnit)
-        {
-            print("hit player!");
             other.GetComponent<Unit>().ReceiveHit();
 
-            if (NetworkManager.Singleton.IsHost)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                DestroyObjectServerRpc();
-            }
+            //if (NetworkManager.Singleton.IsHost)
+            //{
+            //    Destroy(gameObject);
+            //}
         }
         if (other.CompareTag("Wall"))
         {
@@ -69,10 +55,6 @@ public class Bullet : NetworkBehaviour
             if (NetworkManager.Singleton.IsHost)
             {
                 Destroy(gameObject);
-            }
-            else
-            {
-                DestroyObjectServerRpc();
             }
         }
     }
