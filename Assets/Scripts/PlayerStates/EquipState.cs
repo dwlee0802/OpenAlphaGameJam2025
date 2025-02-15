@@ -29,6 +29,11 @@ public class EquipState : State
             gunObject.Pickup();
             parent.ammoCount += 1;
             print("Increased " + parent.name + " ammo count by one");
+
+            if(parent.laser.gameObject.activeSelf)
+            {
+                parent.laser.gameObject.SetActive(true);
+            }
         }
 
         return idleState;

@@ -11,10 +11,15 @@ public class Board : MonoBehaviour
     GameObject tilePrefab = null;
     [SerializeField]
     GameObject wallPrefab = null;
+    [SerializeField]
+    GameObject gunPrefab = null;
+
     static int gridLength = 1;
 
     public void InitializeGrid()
     {
+        bool placedGun = false;
+
         for(int h = 0; h < Board.height; h++)
         {
             List<Tile> rowList = new List<Tile>();
@@ -32,14 +37,24 @@ public class Board : MonoBehaviour
                 {
                     newTile.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
                 }
-
+                
                 // temp wall generation
-                if(Random.Range(0,10) > 8)
+                if (Mathf.PerlinNoise(h * 0.7f, w * 0.7f) > 0.65)
                 {
                     GameObject newWall = Instantiate(wallPrefab);
                     newWall.transform.SetParent(transform);
                     newWall.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
                 }
+                else
+                {
+                    //if (Random.Range(0,10) % 5 == 1 && placedGun == false)
+                    //{
+                    //    GameObject gun = Instantiate(gunPrefab);
+                    //    gun.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
+                    //    placedGun = true;
+                    //}
+                }
+                
             }
 
             grid.Add(rowList);

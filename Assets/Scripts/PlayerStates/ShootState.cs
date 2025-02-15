@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Netcode;
 
 public class ShootState : State
 {
@@ -19,11 +20,19 @@ public class ShootState : State
     {
         if (parent.ammoCount > 0)
         {
-            Bullet newBullet = Instantiate(parent.bulletPrefab);
-            newBullet.transform.SetParent(parent.transform);
-            newBullet.transform.rotation = transform.rotation;
-            newBullet.transform.position = parent.transform.position;
-            newBullet.originUnit = parent.gameObject;
+            if (parent.IsHost)
+            {
+                Bullet newBullet = parent.SpawnBullet();
+
+                NetworkObject obj = newBullet.GetComponent<NetworkObject>();
+                obj.Spawn();
+                //obj.transform.SetParent(parent.transform);
+            }
+            else
+            {
+                parent.RequestSpawnServerRpc();
+            }
+
             parent.ammoCount -= 1;
 
             print("Shot bullet!");
@@ -40,4 +49,5 @@ public class ShootState : State
     {
         return null;
     }
+
 }

@@ -16,12 +16,36 @@ public class IdleState : State
     public override void Enter()
     {
         print("Entered idle state");
+        if (parent == null)
+        {
+            return;
+        }
+        if (!parent.IsHost)
+        {
+            return;
+        }
+        if (parent.terminal == null)
+        {
+            return;
+        }
         parent.terminal.field.interactable = true;
     }
 
     public override void Exit()
     {
         print("Exited idle state");
+        if (parent == null)
+        {
+            return;
+        }
+        if (!parent.IsHost)
+        {
+            return;
+        }
+        if (parent.terminal == null)
+        {
+            return;
+        }
         parent.terminal.field.interactable = false;
     }
 
