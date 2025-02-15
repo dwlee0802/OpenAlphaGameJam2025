@@ -12,6 +12,8 @@ using TMPro;
 
 public class NetworkUI : MonoBehaviour
 {
+    public bool networkEstablished = false;
+
     [SerializeField]
     Button hostButton;
     [SerializeField]
@@ -34,9 +36,10 @@ public class NetworkUI : MonoBehaviour
     async void HostButtonOnClick()
     {
         string code = await StartHostWithRelay();
-        joinCodeLabel.text = "Join Code: " + code;
+        GameManager.instance.preGameUI.codeLabel.text = "Join Code: " + code;
         gameObject.SetActive(false);
         GameManager.instance.InGameUI.gameObject.SetActive(true);
+        networkEstablished = true;
     }
 
     async void JoinButtonOnClick()
@@ -45,6 +48,7 @@ public class NetworkUI : MonoBehaviour
         await StartClientWithRelay(code);
         gameObject.SetActive(false);
         GameManager.instance.InGameUI.gameObject.SetActive(true);
+        networkEstablished = true;
     }
 
     public async Task<string> StartHostWithRelay(int maxConnections = 5)

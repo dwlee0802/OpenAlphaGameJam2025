@@ -1,8 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    GameStateMachine stateMachine;
+
     static List<Unit> units = new List<Unit>();
 
     [SerializeField]
@@ -21,8 +25,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;
 
-    [SerializeField]
-    public Transform InGameUI;
+    public InGameUI InGameUI;
+
+    public PreGameUI preGameUI;
+
+    public NetworkUI networkUI;
+
+    public Transform tempCamera;
 
 
     private void Start()
@@ -33,6 +42,9 @@ public class GameManager : MonoBehaviour
         GameManager.boardRef = board;
 
         GameManager.instance = this;
+
+        stateMachine = GetComponentInChildren<GameStateMachine>();
+        stateMachine.Initialize(this);
     }
 
     public static void AddUnit(Unit unit)
@@ -45,8 +57,6 @@ public class GameManager : MonoBehaviour
 
             // unit ref for ammo count ui
             instance.ammoUI.boundUnit = unit;
-
-            print("Spawn position: " + unit.transform.position);
 
             // inject ref to unit for bullet prefab
         }
@@ -66,5 +76,21 @@ public class GameManager : MonoBehaviour
         unit.transform.position = Vector3.zero + units.Count * Vector3.right * 5;
 
         units.Add(unit);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        stateMachine.UpdateProcess(Time.deltaTime);
+    }
+
+    public static int PlayerCount()
+    {
+        if (units == null)
+        {
+            return 0;
+        }
+
+        return units.Count;
     }
 }
