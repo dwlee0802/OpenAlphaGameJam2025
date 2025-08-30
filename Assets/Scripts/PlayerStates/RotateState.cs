@@ -38,8 +38,6 @@ public class RotateState : State
 
     public override State FixedUpdateProcess(float delta)
     {
-        print("time: " + time + " duration: " + duration);
-
         if (time < duration)
         {
             if (isRight)

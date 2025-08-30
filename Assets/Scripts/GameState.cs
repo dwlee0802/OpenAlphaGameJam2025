@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class GameState: MonoBehaviour
+public class GameState: NetworkBehaviour
 {
     public GameManager parent;
 

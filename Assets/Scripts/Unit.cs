@@ -24,6 +24,9 @@ public class Unit : NetworkBehaviour
 
     public NetworkVariable<bool> isReady;
 
+    void Awake()
+    {
+    }
 
     private void Start()
     {
@@ -43,6 +46,18 @@ public class Unit : NetworkBehaviour
         stateMachine.Initialize(this);
 
         laser = transform.GetChild(2);
+
+        if (isHost)
+        {
+           isReady = new NetworkVariable<bool>(
+           value: true,
+           NetworkVariableReadPermission.Everyone,
+           NetworkVariableWritePermission.Server);
+        }
+        else
+        {
+            isReady.OnValueChanged += ReadyChanged;
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -72,7 +87,16 @@ public class Unit : NetworkBehaviour
             }
         }
 
-        isReady = new NetworkVariable<bool>();
+    }
+
+    public void ReadyChanged(bool before, bool after)
+    {
+        print("ready changed to " + after);
+    }
+
+    [ServerRpc]
+    public void RequestReadyServerRpc()
+    {
         isReady.Value = true;
     }
 
@@ -101,15 +125,6 @@ public class Unit : NetworkBehaviour
     {
         print(name + " received hit!");
         isDead = true;
-
-        if (IsHost)
-        {
-            isReady.Value = false;
-        }
-        else
-        {
-            UnreadyServerRpc();
-        }
     }
 
     [ServerRpc]
@@ -139,17 +154,5 @@ public class Unit : NetworkBehaviour
         }
 
         return newBullet;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void ReadyServerRpc()
-    {
-        isReady.Value = true;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void UnreadyServerRpc()
-    {
-        isReady.Value = false;
     }
 }

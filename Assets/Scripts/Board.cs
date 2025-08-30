@@ -5,7 +5,10 @@ public class Board : MonoBehaviour
 {
     static int width = 10;
     static int height = 10;
-    List<List<Tile>> grid = new List<List<Tile>>();
+    List<List<GameObject>> grid = new List<List<GameObject>>();
+
+    List<GameObject> guns = new List<GameObject>();
+    List<GameObject> walls = new List<GameObject>();
 
     [SerializeField]
     GameObject tilePrefab = null;
@@ -42,18 +45,33 @@ public class Board : MonoBehaviour
 
     public void InitializeGrid()
     {
-        bool placedGun = false;
-
-        for(int h = 0; h < Board.height; h++)
+        foreach (GameObject go in guns)
         {
-            List<Tile> rowList = new List<Tile>();
+            Destroy(go);
+        }
+        foreach (GameObject go in walls)
+        {
+            Destroy(go);
+        }
+        foreach (var lst in grid)
+        {
+            foreach (GameObject go in lst)
+            {
+                Destroy(go);
+            }
+        }
+
+        for (int h = 0; h < Board.height; h++)
+        {
+            List<GameObject> rowList = new List<GameObject>();
             for(int w = 0; w < Board.width; w++)
 			{
                 GameObject newTile = Instantiate(tilePrefab);
                 newTile.transform.SetParent(transform);
                 newTile.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
+                rowList.Add(newTile);
                 // set color
-                if((h + w) % 2 == 1)
+                if ((h + w) % 2 == 1)
                 {
                     newTile.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
                 }
@@ -68,6 +86,7 @@ public class Board : MonoBehaviour
                     GameObject newWall = Instantiate(wallPrefab);
                     newWall.transform.SetParent(transform);
                     newWall.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
+                    walls.Add(newWall);
                 }
                 // gun
                 if (Board.boardArray[w + h * Board.height] == 7)
@@ -75,6 +94,7 @@ public class Board : MonoBehaviour
                     GameObject newGun = Instantiate(gunPrefab);
                     newGun.transform.SetParent(transform);
                     newGun.transform.position = Vector3.right * Board.gridLength * w + Vector3.back * Board.gridLength * h;
+                    guns.Add(newGun);
                 }
 
             }
@@ -83,7 +103,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    public Tile GetTileAt(int w, int h)
+    public GameObject GetTileAt(int w, int h)
     {
         return grid[h][w];
     }

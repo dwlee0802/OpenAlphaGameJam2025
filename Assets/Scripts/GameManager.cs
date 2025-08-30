@@ -38,6 +38,8 @@ public class GameManager : NetworkBehaviour
     public static bool hostReady = false;
     public static bool clientReady = false;
 
+    public ReadyTracker tracker;
+
 
     private void Start()
     {
@@ -108,22 +110,17 @@ public class GameManager : NetworkBehaviour
         return units.Count;
     }
 
-    [ServerRpc]
-    public void ClientReadyServerRpc()
-    {
-        print("client ready");
-        clientReady = true;
-    }
 
     public bool EveryoneReady()
     {
         foreach(Unit unit in GameManager.units)
         {
-            if (unit.isReady.Value == false)
+            if (!unit.isReady.Value)
             {
                 return false;
             }
         }
+
         return true;
     }
 }

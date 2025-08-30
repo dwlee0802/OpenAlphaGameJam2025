@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class PostGameState : GameState
@@ -10,7 +11,6 @@ public class PostGameState : GameState
     private void Start()
     {
         GameManager.instance.postGameUI.restartButton.onClick.AddListener(OnRestartButtonPressed);
-
     }
 
     public override void Enter()
@@ -34,7 +34,10 @@ public class PostGameState : GameState
 
         foreach (Unit unit in GameManager.units)
         {
-            unit.UnreadyServerRpc();
+            if (IsHost)
+            {
+                unit.isReady.Value = false;
+            }
         }
     }
 
@@ -62,15 +65,27 @@ public class PostGameState : GameState
         {
             if (unit.IsOwner)
             {
-                if (unit.IsHost)
+                if (IsHost)
                 {
-                    unit.ReadyServerRpc();
+                    unit.isReady.Value = true;
                 }
                 else
                 {
-                    unit.ReadyServerRpc();
+                    unit.RequestReadyServerRpc();
                 }
             }
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RequestHostReadyServerRpc()
+    {
+        parent.tracker.hostReady.Value = true;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RequestClientReadyServerRpc()
+    {
+        parent.tracker.clientReady.Value = true;
     }
 }
